@@ -20,9 +20,11 @@ export const AnimatedBackground = () => {
         r="100" 
         fill="url(#grad)" 
         animate={{
-          scale: [1, 1.2, 1],
-          x: ['0%', '100%', '0%'],
-          y: ['0%', '100%', '0%'],
+          scale: [1, 1.05, 1],
+          rotate: [0, 360],
+          transitionEnd: {
+            rotate: 0,
+          },
         }}
         transition={{
           duration: 10,

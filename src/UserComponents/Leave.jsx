@@ -1,6 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format, parseISO } from 'date-fns';
+import { motion } from 'framer-motion';
+
+const variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+}
 
 export default function Leave() {
   const [leaves, setLeaves] = useState([]);
@@ -42,32 +58,60 @@ export default function Leave() {
   };
 
   return (
-    <div className="p-4">
+    <motion.div className="p-4" variants={variants} initial="hidden" animate="visible">
       <h2 className="text-lg font-bold mb-4">Apply for leave</h2>
       <div className="mb-4">
         <label className="block">Start Date</label>
-        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="border rounded p-2 w-full"/>
+        <motion.input 
+          type="date" 
+          value={startDate} 
+          onChange={(e) => setStartDate(e.target.value)} 
+          className="border rounded p-2 w-full transition duration-500 ease-in-out focus:border-blue-500 focus:outline-none"
+        />
       </div>
       <div className="mb-4">
         <label className="block">End Date</label>
-        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="border rounded p-2 w-full"/>
+        <motion.input 
+          type="date" 
+          value={endDate} 
+          onChange={(e) => setEndDate(e.target.value)} 
+          className="border rounded p-2 w-full transition duration-500 ease-in-out focus:border-blue-500 focus:outline-none"
+        />
       </div>
       <div className="mb-4">
         <label className="block">Reason</label>
-        <textarea value={reason} onChange={(e) => setReason(e.target.value)} className="border rounded p-2 w-full"/>
+        <motion.textarea 
+          value={reason} 
+          onChange={(e) => setReason(e.target.value)} 
+          className="border rounded p-2 w-full transition duration-500 ease-in-out focus:border-blue-500 focus:outline-none"
+        />
       </div>
-      <button onClick={handleLeaveApplication} className="bg-blue-500 text-white rounded px-4 py-2">Apply</button>
+      <motion.button 
+        onClick={handleLeaveApplication} 
+        className="bg-blue-500 text-white rounded px-4 py-2 cursor-pointer transition duration-500 ease-in-out hover:bg-blue-700"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        Apply
+      </motion.button>
 
       <h2 className="text-lg font-bold my-4">All Leaves</h2>
       <div className="grid md:grid-cols-2 gap-4">
-        {leaves.map((leave) => (
-          <div key={leave.id} className="border rounded p-4 shadow bg-white">
-            <h3 className="font-bold text-sm">{format(parseISO(leave.startDate), 'MM/dd/yyyy')} - {format(parseISO(leave.endDate), 'MM/dd/yyyy')}</h3>
-            <p>{leave.reason}</p>
-            <p className={`font-bold ${leave.status === 'Approved' ? 'text-green-500' : 'text-red-500'}`}>Status: {leave.status}</p>
-          </div>
-        ))}
+        <motion.div variants={variants}>
+          {leaves.map((leave) => (
+            <motion.div 
+              key={leave.id} 
+              className="border rounded p-4 shadow bg-white transition duration-500 ease-in-out hover:shadow-lg" 
+              variants={itemVariants}
+              whileHover={{ scale: 1.02 }}
+            >
+              <h3 className="font-bold text-sm">{format(parseISO(leave.startDate), 'MM/dd/yyyy')} - {format(parseISO(leave.endDate), 'MM/dd/yyyy')}</h3>
+              <p>{leave.reason}</p>
+              <p className={`font-bold ${leave.status === 'Approved' ? 'text-green-500' : 'text-red-500'}`}>Status: {leave.status}</p>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

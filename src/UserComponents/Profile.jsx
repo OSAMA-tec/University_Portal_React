@@ -51,30 +51,47 @@ export default function UserProfile() {
         <motion.img 
           src={profile.profilePicture} 
           alt="Profile" 
-          className="rounded-full h-48 w-48 object-cover"
+          className="rounded-full h-48 w-48 object-cover shadow-lg"
           initial={{ x: '-100vw' }} 
           animate={{ x: 0 }} 
           transition={{ type: 'spring', stiffness: 120 }}/>
-        <input type="file" onChange={handleProfilePictureChange} className="mt-2"/>
+        <input type="file" onChange={handleProfilePictureChange} className="hidden" id="fileUpload"/>
+        <label htmlFor="fileUpload" className="mt-2 cursor-pointer py-2 px-4 bg-blue-500 rounded text-white text-sm hover:bg-blue-600 transition duration-200 ease-in-out">Upload</label>
       </div>
       <div className="space-y-2">
         <motion.h2 
-          className="text-lg font-bold"
-          initial={{ y: '-100vh' }} 
-          animate={{ y: 0 }} 
+          className="text-lg font-semibold text-blue-700"
+          variants={{ 
+            hidden: { opacity: 0, y: '-100vh' }, 
+            visible: { opacity: 1, y: 0 }
+          }}
+          initial="hidden"
+          animate="visible"
           transition={{ type: 'spring', stiffness: 120 }}>{profile.name}</motion.h2>
         <motion.p 
-          initial={{ y: '-100vh' }} 
-          animate={{ y: 0 }} 
-          transition={{ type: 'spring', stiffness: 120, delay: 0.1 }}><span className="font-bold">Registration Number:</span> {profile.regNo}</motion.p>
+          variants={{ 
+            hidden: { opacity: 0, y: '-100vh' }, 
+            visible: { opacity: 1, y: 0 }
+          }}
+          initial="hidden"
+          animate="visible"
+          transition={{ type: 'spring', stiffness: 120, delay: 0.1 }}><span className="font-semibold text-gray-600">Registration Number:</span> {profile.regNo}</motion.p>
         <motion.p 
-          initial={{ y: '-100vh' }} 
-          animate={{ y: 0 }} 
-          transition={{ type: 'spring', stiffness: 120, delay: 0.2 }}><span className="font-bold">Email:</span> {profile.email}</motion.p>
+          variants={{ 
+            hidden: { opacity: 0, y: '-100vh' }, 
+            visible: { opacity: 1, y: 0 }
+          }}
+          initial="hidden"
+          animate="visible"
+          transition={{ type: 'spring', stiffness: 120, delay: 0.2 }}><span className="font-semibold text-gray-600">Email:</span> {profile.email}</motion.p>
         <motion.p 
-          initial={{ y: '-100vh' }} 
-          animate={{ y: 0 }} 
-          transition={{ type: 'spring', stiffness: 120, delay: 0.3 }}><span className="font-bold">Grade:</span> {profile.grade}</motion.p>
+          variants={{ 
+            hidden: { opacity: 0, y: '-100vh' }, 
+            visible: { opacity: 1, y: 0 }
+          }}
+          initial="hidden"
+          animate="visible"
+          transition={{ type: 'spring', stiffness: 120, delay: 0.3 }}><span className="font-semibold text-gray-600">Grade:</span> {profile.grade}</motion.p>
       </div>
     </motion.div>
   );

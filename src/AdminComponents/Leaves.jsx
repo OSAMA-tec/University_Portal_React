@@ -47,13 +47,28 @@ export default function Leaves() {
   };
 
   return (
-    <motion.div className="p-4" initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 0.5}}>
-      <h2 className="text-2xl font-semibold mb-4 text-blue-700">Leave Requests</h2>
+    <motion.div className="p-4" initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 1}}>
+      <motion.h2 
+        className="text-2xl font-semibold mb-4 text-blue-700" 
+        initial={{ x: '-100vw' }}
+        animate={{ x: 0 }}
+        transition={{ delay: 0.2, type: 'spring', stiffness: 120 }}
+      >
+        Leave Requests
+      </motion.h2>
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       {successMessage && <p className="text-green-500">{successMessage}</p>}
-      <div className="grid md:grid-cols-2 gap-4">
-        {leaves.map((leave) => (
-          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.5 }} key={leave._id} className="border rounded p-4 shadow bg-white cursor-pointer" onClick={() => setSelectedLeave(leave._id)}>
+      <motion.div className="grid md:grid-cols-2 gap-4" initial={{opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.5, duration: 1}}>
+        {leaves.map((leave, index) => (
+          <motion.div 
+            whileHover={{ scale: 1.05 }} 
+            key={leave._id} 
+            className="border rounded p-4 shadow bg-white cursor-pointer" 
+            onClick={() => setSelectedLeave(leave._id)}
+            initial={{ y: '-10vh', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: index * 0.2, duration: 0.5 }}
+          >
             <h3 className="font-bold text-lg text-blue-700">{leave.user}</h3>
             <p className="text-gray-600">Start Date: {new Date(leave.startDate).toLocaleDateString()}</p>
             <p className="text-gray-600">End Date: {new Date(leave.endDate).toLocaleDateString()}</p>
@@ -61,19 +76,31 @@ export default function Leaves() {
             <p className="text-gray-600">Status: <span className={`font-bold ${leave.status === 'Rejected' ? 'text-red-500' : leave.status === 'Approved' ? 'text-green-500' : 'text-blue-500'}`}>{leave.status}</span></p>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
       {selectedLeave && (
         <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
-          <motion.div initial={{ opacity: 0, y: "-100vh" }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 50 }} className="bg-white p-4 rounded shadow">
+          <motion.div 
+            initial={{ opacity: 0, y: "-100vh" }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ type: "spring", stiffness: 50 }} 
+            className="bg-white p-4 rounded shadow"
+          >
             <button onClick={() => setSelectedLeave(null)} className="float-right">X</button>
             <h2 className="text-2xl font-bold mb-4 text-blue-700">Update Leave Status</h2>
             <select value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)} className="border rounded p-2 w-full">
-              <option value="">Select status...</option>
+              <option value="">Select status...</option >          
               <option value="Pending">Pending</option>
               <option value="Approved">Approved</option>
               <option value="Rejected">Rejected</option>
             </select>
-            <button onClick={() => handleLeaveUpdate(selectedLeave)} className="bg-blue-500 text-white rounded px-4 py-2 mt-4">Update</button>
+            <motion.button 
+              onClick={() => handleLeaveUpdate(selectedLeave)} 
+              className="bg-blue-500 text-white rounded px-4 py-2 mt-4" 
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              Update
+            </motion.button>
           </motion.div>
         </div>
       )}

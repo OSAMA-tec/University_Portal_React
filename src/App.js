@@ -21,10 +21,11 @@ import ShowInvoices from './AdminComponents/Invoices/ShowInvoices';
 import InvoiceDetails from './AdminComponents/Invoices/InvoiceDetails';
 import TicketPanel from './AdminComponents/Tickets/TicketPanel';
 import CustomerDashboard from './CustomerComponents/CustomerDashboard';
-import TicketChat from './AdminComponents/Tickets';
+import TicketChat from './AdminComponents/Tickets/TicketChat';
 import TicketDetails from './CustomerComponents/TicketDetails';
 import CreateTicket from './CustomerComponents/CreateTicket';
 import RolesPage from './AdminComponents/Roles/RolesPage';
+import PermissionsPage from './AdminComponents/Permissions/PermissionsPage';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
           <Route path="/customer/tickets/:id" element={<TicketDetails />} />
           <Route path="/customer/tickets/create" element={<CreateTicket />} />
           <Route path="/admin/roles" element={<RolesPage />} />
+          <Route path="/admin/permissions" element={<PermissionsPage />} />
         </Routes>
         <Footer />
       </div>

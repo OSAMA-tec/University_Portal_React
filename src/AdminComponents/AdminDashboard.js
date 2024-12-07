@@ -39,7 +39,7 @@ function AdminDashboard() {
     { title: 'Customers', icon: <FaUsers />, color: 'green', path: '/admin/customers', count: '1.2k' },
     { title: 'Tickets', icon: <FaTicketAlt />, color: 'red', path: '/admin/tickets', count: stats.openTickets },
     { title: 'Chats', icon: <FaComments />, color: 'purple', path: '/admin/chats', count: '18' },
-    { title: 'Permissions', icon: <FaLock />, color: 'orange', path: '/admin/permissions', count: '6' },
+    { title: 'Permissions', icon: <FaLock />, color: 'orange', path: '/admin/permissions', count: '12' },
     { title: 'Roles', icon: <FaUserTag />, color: 'pink', path: '/admin/roles', count: '4' },
     { title: 'Performance Insight', icon: <FaChartLine />, color: 'teal', path: '/admin/performance', count: 'View' }
   ];

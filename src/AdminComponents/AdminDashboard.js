@@ -7,8 +7,12 @@ import axios from 'axios';
 function AdminDashboard() {
   const navigate = useNavigate();
   const [stats, setStats] = useState({
-    ticketCount: 0,
-    openTickets: 0
+    totalUsers: 0,
+    activeUsers: 0,
+    openTickets: 0,
+    activeSubscriptions: 0,
+    pendingBills: 0,
+    recentUsers: []
   });
 
   useEffect(() => {
@@ -19,15 +23,19 @@ function AdminDashboard() {
     try {
       const adminToken = localStorage.getItem('adminToken');
       const response = await axios.get(
-        'http://localhost:3000/api/tickets?status=open',
+        'http://localhost:3000/api/admin/dashboard',
         {
           headers: { Authorization: `Bearer ${adminToken}` }
         }
       );
-      
+
       setStats({
-        ticketCount: response.data.data.pagination.total,
-        openTickets: response.data.data.tickets.length
+        totalUsers: response.data.data.totalUsers,
+        activeUsers: response.data.data.activeUsers,
+        openTickets: response.data.data.openTickets || 0, // Assuming you still want to keep this
+        activeSubscriptions: response.data.data.activeSubscriptions,
+        pendingBills: response.data.data.pendingBills,
+        recentUsers: response.data.data.recentUsers
       });
     } catch (err) {
       console.error('Error fetching stats:', err);
@@ -36,11 +44,12 @@ function AdminDashboard() {
 
   const dashboardSections = [
     { title: 'Invoices', icon: <FaFileInvoice />, color: 'blue', path: '/admin/invoices', count: '150+' },
-    { title: 'Customers', icon: <FaUsers />, color: 'green', path: '/admin/customers', count: '1.2k' },
+    { title: 'Customers', icon: <FaUsers />, color: 'green', path: '/admin/customers', count: stats.totalUsers },
+    { title: 'Active Users', icon: <FaUsers />, color: 'green', path: '/admin/users', count: stats.activeUsers },
     { title: 'Tickets', icon: <FaTicketAlt />, color: 'red', path: '/admin/tickets', count: stats.openTickets },
     { title: 'Chats', icon: <FaComments />, color: 'purple', path: '/admin/chats', count: '18' },
-    { title: 'Permissions', icon: <FaLock />, color: 'orange', path: '/admin/permissions', count: '12' },
-    { title: 'Roles', icon: <FaUserTag />, color: 'pink', path: '/admin/roles', count: '4' },
+    { title: 'Subscriptions', icon: <FaLock />, color: 'orange', path: '/admin/subscriptions', count: stats.activeSubscriptions },
+    { title: 'Pending Bills', icon: <FaUserTag />, color: 'pink', path: '/admin/bills', count: stats.pendingBills },
     { title: 'Performance Insight', icon: <FaChartLine />, color: 'teal', path: '/admin/performance', count: 'View' }
   ];
 
@@ -81,7 +90,7 @@ function AdminDashboard() {
         animate="visible"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10"
       >
-        {['Total Revenue', 'Active Users', 'Pending Tickets', 'New Customers'].map((stat, index) => (
+        {['Total Users', 'Active Users', 'Pending Bills', 'Active Subscriptions'].map((stat, index) => (
           <motion.div
             key={stat}
             variants={itemVariants}
@@ -89,7 +98,7 @@ function AdminDashboard() {
           >
             <h3 className="text-gray-500 text-sm">{stat}</h3>
             <p className="text-2xl font-bold mt-2">
-              {index === 0 ? '$45,231' : index === 1 ? '1,205' : index === 2 ? '13' : '+48'}
+              {index === 0 ? stats.totalUsers : index === 1 ? stats.activeUsers : index === 2 ? stats.pendingBills : stats.activeSubscriptions}
             </p>
             <span className="text-green-500 text-sm">+2.5% from last month</span>
           </motion.div>
@@ -136,14 +145,14 @@ function AdminDashboard() {
         transition={{ delay: 0.3 }}
         className="mt-10 bg-white rounded-xl shadow-sm p-6"
       >
-        <h2 className="text-2xl font-bold mb-4">Recent Activity</h2>
+        <h2 className="text-2xl font-bold mb-4">Recent Users</h2>
         <div className="space-y-4">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
-              <div className="w-2 h-2 rounded-full bg-green-500 mr-4"></div>
+          {stats.recentUsers.map((user) => (
+            <div key={user._id} className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
               <div className="flex-1">
-                <p className="text-gray-800">New customer registration</p>
-                <p className="text-sm text-gray-500">2 minutes ago</p>
+                <p className="text-gray-800">{user.name} ({user.email})</p>
+                <p className="text-sm text-gray-500">Role: {user.role.name}</p>
+                <p className="text-sm text-gray-500">Joined: {new Date(user.createdAt).toLocaleDateString()}</p>
               </div>
             </div>
           ))}

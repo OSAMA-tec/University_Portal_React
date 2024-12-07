@@ -20,6 +20,11 @@ import CreateInvoice from './AdminComponents/Invoices/CreateInvoice';
 import ShowInvoices from './AdminComponents/Invoices/ShowInvoices';
 import InvoiceDetails from './AdminComponents/Invoices/InvoiceDetails';
 import TicketPanel from './AdminComponents/Tickets/TicketPanel';
+import CustomerDashboard from './CustomerComponents/CustomerDashboard';
+import TicketChat from './AdminComponents/Tickets';
+import TicketDetails from './CustomerComponents/TicketDetails';
+import CreateTicket from './CustomerComponents/CreateTicket';
+import RolesPage from './AdminComponents/Roles/RolesPage';
 
 function App() {
   return (
@@ -44,6 +49,10 @@ function App() {
           <Route path="/admin/invoices/create" element={<CreateInvoice />} />
           <Route path="/admin/invoices/:id" element={<InvoiceDetails />} />
           <Route path="/admin/tickets" element={<TicketPanel />} />
+          <Route path="/customer/dashboard" element={<CustomerDashboard />} />
+          <Route path="/customer/tickets/:id" element={<TicketDetails />} />
+          <Route path="/customer/tickets/create" element={<CreateTicket />} />
+          <Route path="/admin/roles" element={<RolesPage />} />
         </Routes>
         <Footer />
       </div>

@@ -18,10 +18,8 @@ function AdminLogin() {
       const response = await axios.post(`${API_CONFIG.baseURL}${API_CONFIG.endpoints.adminLogin}`, data);
       
       if (response.data.status === 'success') {
-        // Store token as adminToken specifically for admin routes
         localStorage.setItem('adminToken', response.data.token);
         
-        // Store complete user data
         const userData = {
           id: response.data.data.user._id,
           name: response.data.data.user.name,
@@ -37,8 +35,10 @@ function AdminLogin() {
         
         if (response.data.data.user.role.name === 'admin') {
           navigate('/admin/dashboard');
+        } else if (response.data.data.user.role.name === 'customer') {
+          navigate('/customer/dashboard');
         } else {
-          setError('Unauthorized access. Admin privileges required.');
+          setError('Invalid role type.');
           localStorage.removeItem('adminToken');
           localStorage.removeItem('adminData');
         }

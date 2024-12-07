@@ -13,16 +13,20 @@ import AttendanceAdmin from './AdminComponents/Attendance';
 import Leaves from './AdminComponents/Leaves';
 import Users from './AdminComponents/Users';
 import Grade from './AdminComponents/Grade';
+import AdminDashboard from './AdminComponents/AdminDashboard';
+import AdminNavbar from './AdminComponents/AdminNavbar';
+import Customers from './AdminComponents/Customers';
 
 function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
-        <Navbar />
+        {window.location.pathname.includes('/admin') ? <AdminNavbar /> : <Navbar />}
         <Routes>
           <Route exact path="/" element={<HomePage/>} />
           <Route path="/signup" element={<UserRegistration/>} />
           <Route path="/login" element={<UserLogin/>} />
+          <Route path="/admin/customers" element={<Customers />} />
           <Route path="/Admin/login" element={<AdminLogin/>} />
           <Route path="/user/profile" element={<Profile/>} />
           <Route path="/user/leave" element={<Leave/>} />
@@ -31,6 +35,7 @@ function App() {
           <Route path="/admin/leaves" element={<Leaves/>} />
           <Route path="/admin/users" element={<Users/>} />
           <Route path="/admin/grade" element={<Grade/>} />
+          <Route path="/admin/dashboard" element={<AdminDashboard/>} />
         </Routes>
         <Footer />
       </div>

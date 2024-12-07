@@ -1,15 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaFileInvoice, FaUsers, FaTicketAlt, FaComments, FaLock, FaUserTag, FaChartLine } from 'react-icons/fa';
+import axios from 'axios';
 
 function AdminDashboard() {
   const navigate = useNavigate();
+  const [stats, setStats] = useState({
+    ticketCount: 0,
+    openTickets: 0
+  });
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const adminToken = localStorage.getItem('adminToken');
+      const response = await axios.get(
+        'http://localhost:3000/api/tickets?status=open',
+        {
+          headers: { Authorization: `Bearer ${adminToken}` }
+        }
+      );
+      
+      setStats({
+        ticketCount: response.data.data.pagination.total,
+        openTickets: response.data.data.tickets.length
+      });
+    } catch (err) {
+      console.error('Error fetching stats:', err);
+    }
+  };
 
   const dashboardSections = [
     { title: 'Invoices', icon: <FaFileInvoice />, color: 'blue', path: '/admin/invoices', count: '150+' },
     { title: 'Customers', icon: <FaUsers />, color: 'green', path: '/admin/customers', count: '1.2k' },
-    { title: 'Tickets', icon: <FaTicketAlt />, color: 'red', path: '/admin/tickets', count: '25' },
+    { title: 'Tickets', icon: <FaTicketAlt />, color: 'red', path: '/admin/tickets', count: stats.openTickets },
     { title: 'Chats', icon: <FaComments />, color: 'purple', path: '/admin/chats', count: '18' },
     { title: 'Permissions', icon: <FaLock />, color: 'orange', path: '/admin/permissions', count: '6' },
     { title: 'Roles', icon: <FaUserTag />, color: 'pink', path: '/admin/roles', count: '4' },

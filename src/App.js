@@ -16,6 +16,10 @@ import Grade from './AdminComponents/Grade';
 import AdminDashboard from './AdminComponents/AdminDashboard';
 import AdminNavbar from './AdminComponents/AdminNavbar';
 import Customers from './AdminComponents/Customers';
+import CreateInvoice from './AdminComponents/Invoices/CreateInvoice';
+import ShowInvoices from './AdminComponents/Invoices/ShowInvoices';
+import InvoiceDetails from './AdminComponents/Invoices/InvoiceDetails';
+import TicketPanel from './AdminComponents/Tickets/TicketPanel';
 
 function App() {
   return (
@@ -36,6 +40,10 @@ function App() {
           <Route path="/admin/users" element={<Users/>} />
           <Route path="/admin/grade" element={<Grade/>} />
           <Route path="/admin/dashboard" element={<AdminDashboard/>} />
+          <Route path="/admin/invoices" element={<ShowInvoices />} />
+          <Route path="/admin/invoices/create" element={<CreateInvoice />} />
+          <Route path="/admin/invoices/:id" element={<InvoiceDetails />} />
+          <Route path="/admin/tickets" element={<TicketPanel />} />
         </Routes>
         <Footer />
       </div>
